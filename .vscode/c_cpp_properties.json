@@ -8,7 +8,7 @@
         "${config:idf.espIdfPath}/components/**",
         "${config:idf.espIdfPathWin}/components/**",
         "${workspaceFolder}/**",
-        "${config:idf.espIdfPathWin}/components/freertos/include/freertos/"
+        "${workspaceFolder}/main/st7789v/"
       ],
       "browse": {
         "path": [
