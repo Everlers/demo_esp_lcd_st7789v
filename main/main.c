@@ -13,15 +13,13 @@
 #include "esp_spi_flash.h"
 #include "st7789v.h"
 
-uint16_t color = 0xFFFF;
-
 void app_main(void)
 {
     st7789v_init();
     st7789v_blk_on();
-    st7789v_set_frame(0,0,320,240);
-    for(int i=0;i<320*240;i++)
-        st7789v_write_data((uint8_t *)&color,2);
+    //st7789v_set_frame(0,0,240,320);
+    st7789v_clean_display();
+    printf("ST7789V clean done.\r\n");
     while (1)
     {
         vTaskDelay(100);

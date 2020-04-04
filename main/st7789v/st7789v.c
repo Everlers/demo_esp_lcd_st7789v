@@ -17,7 +17,7 @@ void st7789v_init(void)
     int cmd = 0;
     spi_bus_config_t buscfg;
     spi_device_interface_config_t devcfg;
-
+    printf("ST7789V init...\r\n");
     memset(&buscfg,0,sizeof(buscfg));
     memset(&devcfg,0,sizeof(devcfg));
 
@@ -29,7 +29,7 @@ void st7789v_init(void)
     buscfg.max_transfer_sz = 320*240*2;         //最大传输字节
 
     devcfg.mode = 0;                            //SPI模式0
-    devcfg.spics_io_num = -1;             //CS引脚配置
+    devcfg.spics_io_num = ST_SC_IO;             //CS引脚配置
     devcfg.queue_size = 7;                      //传输队列大小
     devcfg.flags = SPI_DEVICE_NO_DUMMY;         //只发送数据不接收数据 (这样SPI输出能达到80MHz)
     devcfg.pre_cb = &spi_pre_transfer_callback; //SPI传输前的回调 用于操作DC引脚
@@ -46,16 +46,13 @@ void st7789v_init(void)
     gpio_set_direction(ST_RST_IO,GPIO_MODE_OUTPUT);
     gpio_pad_select_gpio(ST_BL_IO);
     gpio_set_direction(ST_BL_IO,GPIO_MODE_OUTPUT);
-    gpio_pad_select_gpio(ST_SC_IO);
-    gpio_set_direction(ST_SC_IO,GPIO_MODE_OUTPUT);
-
-    gpio_set_level(ST_SC_IO,0);//使能LCD
+    
     gpio_set_level(ST_BL_IO,0);//先关闭背光板进行初始化
     
     gpio_set_level(ST_RST_IO,0);
     vTaskDelay(100 / portTICK_RATE_MS);
     gpio_set_level(ST_RST_IO,1);
-    vTaskDelay(100 / portTICK_RATE_MS);
+    //vTaskDelay(100 / portTICK_RATE_MS);
 
     //Send all the commands
     while (st_init_cmds[cmd].databytes!=0xff) {
@@ -66,6 +63,7 @@ void st7789v_init(void)
         }
         cmd++;
     }
+    printf("ST7789V init done.\r\n");
 }
 
 void st7789v_blk_on(void)
@@ -76,6 +74,47 @@ void st7789v_blk_on(void)
 void st7789v_blk_off(void)
 {
     gpio_set_level(ST_BL_IO,0);
+}
+
+void st7789v_clean_display(void)
+{
+    uint16_t xstart = 0,xend = 320,ystart = 0,yend = 240;
+    spi_transaction_t trans[6];
+    //In theory, it's better to initialize trans and data only once and hang on to the initialized
+    //variables. We allocate them on the stack, so we need to re-init them each call.
+    for (int x=0; x<6;x++) {
+        memset(&trans[x], 0, sizeof(spi_transaction_t));
+        if ((x&1)==0) {
+            //Even transfers are commands
+            trans[x].length=8;
+            trans[x].user=(void*)0;
+        } else {
+            //Odd transfers are data
+            trans[x].length=8*4;
+            trans[x].user=(void*)1;
+        }
+        trans[x].flags=SPI_TRANS_USE_TXDATA;
+    }
+    trans[0].tx_data[0]=0x2A;           //Column Address Set
+    trans[1].tx_data[0]=xstart>>8;      //Start Col High
+    trans[1].tx_data[1]=xstart&0xff;    //Start Col Low
+    trans[1].tx_data[2]=xend>>8;        //End Col High
+    trans[1].tx_data[3]=xend&0xff;      //End Col Low
+    trans[2].tx_data[0]=0x2B;           //Page address setd
+    trans[3].tx_data[0]=ystart>>8;      //Start page high
+    trans[3].tx_data[1]=ystart&0xff;    //start page low
+    trans[3].tx_data[2]=yend>>8;        //end page high
+    trans[3].tx_data[3]=yend&0xff;      //end page low
+    trans[4].tx_data[0]=0x2C;           //memory write
+    trans[5].flags = 0;
+    trans[5].user = (void*)1;
+    trans[5].length = 320*240*2*8;
+    trans[5].tx_buffer = pvPortMalloc(320*240*2);
+    memset(trans[5].tx_buffer,0xff,320*240*2);
+    for(int i=0;i<6;i++){
+        spi_device_queue_trans(stspi,&trans[i],portMAX_DELAY);
+    }
+    vPortFree(trans[5].tx_buffer);
 }
 
 void st7789v_set_frame(uint16_t xstart,uint16_t ystart,uint16_t xend,uint16_t yend)

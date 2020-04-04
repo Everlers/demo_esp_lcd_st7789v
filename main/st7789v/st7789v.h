@@ -25,5 +25,6 @@ void st7789v_blk_on(void);
 void st7789v_blk_off(void);
 void st7789v_write_cmd(uint8_t cmd);
 void st7789v_write_data(uint8_t *data,uint8_t len);
+void st7789v_clean_display(void);
 void st7789v_set_frame(uint16_t xstart,uint16_t ystart,uint16_t xend,uint16_t yend);
 #endif
