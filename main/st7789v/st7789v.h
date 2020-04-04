@@ -5,7 +5,7 @@
 
 #define ST_MOSI_IO              GPIO_NUM_19
 #define ST_SCLK_IO              GPIO_NUM_18
-#define ST_SC_IO                GPIO_NUM_5
+#define ST_CS_IO                GPIO_NUM_5
 #define ST_DC_IO                GPIO_NUM_16
 #define ST_RST_IO               GPIO_NUM_23
 #define ST_BL_IO                GPIO_NUM_4
@@ -24,7 +24,7 @@ void st7789v_init(void);
 void st7789v_blk_on(void);
 void st7789v_blk_off(void);
 void st7789v_write_cmd(uint8_t cmd);
-void st7789v_write_data(uint8_t *data,uint8_t len);
+void st7789v_write_data(uint8_t *data,uint16_t len);
 void st7789v_clean_display(void);
 void st7789v_set_frame(uint16_t xstart,uint16_t ystart,uint16_t xend,uint16_t yend);
 #endif
