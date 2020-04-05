@@ -11,7 +11,7 @@
 #include "freertos/task.h"
 #include "esp_system.h"
 #include "esp_spi_flash.h"
-#include "st7789v.h"
+#include "./st7789v/st7789v.h"
 
 void app_main(void)
 {

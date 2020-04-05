@@ -33,7 +33,7 @@ void st7789v_init(void)
     devcfg.queue_size = 7;                      //传输队列大小
     devcfg.flags = SPI_DEVICE_NO_DUMMY;         //只发送数据不接收数据 (这样SPI输出能达到80MHz)
     devcfg.pre_cb = spi_pre_transfer_callback; //SPI传输前的回调 用于操作DC引脚
-    devcfg.clock_speed_hz = SPI_MASTER_FREQ_80M;//配置SIP通讯时许 80MHz
+    devcfg.clock_speed_hz = SPI_MASTER_FREQ_8M;//配置SIP通讯时许 80MHz
 
     ret = spi_bus_initialize(SPI3_HOST,&buscfg,1);       //初始化SPI总线 不使用DMA
     ESP_ERROR_CHECK(ret);
@@ -61,14 +61,16 @@ void st7789v_init(void)
         cmd++;
     }
     printf("ST7789V clean display\r\n");
-    st7789v_set_frame(0,0,320,240);
+    st7789v_set_frame(0,0,279,187);
     spi_transaction_t trans;
+    uint16_t color = 0x0000;
+    memset(&trans,0,sizeof(trans));
     trans.flags = SPI_TRANS_USE_TXDATA;
     trans.user = (void*)1;//data
     trans.length = 2*8;
-    trans.tx_data[0] = 0;
-    trans.tx_data[1] = 0;
-    for(uint32_t i=0;i<320*20;i++)
+    trans.tx_data[0] = (~color)>>8;
+    trans.tx_data[1] = (~color)&0xFF;
+    for(uint32_t i=0;i<320*240;i++)
         spi_device_polling_transmit(stspi,&trans);
     printf("ST7789V init done.\r\n");
 }
@@ -151,7 +153,7 @@ void st7789v_write_data(uint8_t *data,uint16_t len)
 //Place data into DRAM. Constant data gets placed into DROM by default, which is not accessible by DMA.
 DRAM_ATTR static const lcd_init_cmd_t st_init_cmds[]={
     /* Memory Data Access Control, MX=MV=1, MY=ML=MH=0, RGB=0 */
-    {0x36, {(1<<5)|(1<<6)|(1<<3)}, 1},
+    {0x36, {(1<<5)|(1<<6)|(0<<3)}, 1},
     /* Interface Pixel Format, 16bits/pixel for RGB/MCU interface */
     {0x3A, {0x55}, 1},
     /* Porch Setting */
