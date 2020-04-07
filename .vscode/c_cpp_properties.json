@@ -5,14 +5,14 @@
       "cStandard": "c11",
       "cppStandard": "c++17",
       "includePath": [
-        "${config:idf.espIdfPath}/components/**",
+        "E:/ESP32/esp-idf-v4.0/components/**",
         "${config:idf.espIdfPathWin}/components/**",
         "${workspaceFolder}/**",
         "${workspaceFolder}/main/st7789v/"
       ],
       "browse": {
         "path": [
-          "${config:idf.espIdfPath}/components",
+          "E:/ESP32/esp-idf-v4.0/components",
           "${config:idf.espIdfPathWin}/components",
           "${workspaceFolder}"
         ],

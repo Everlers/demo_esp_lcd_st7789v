@@ -15,8 +15,9 @@
 
 void app_main(void)
 {
-    st7789v_init();
-    st7789v_blk_on();
+    lcd_init();
+    lcd_show_string(219,128,"ABC",0,0xFFFF);
+    printf("ascii show\r\n");
     while (1)
     {
         vTaskDelay(100);
