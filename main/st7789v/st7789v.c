@@ -1,5 +1,4 @@
 #include "st7789v.h"
-#include "st7789v.h"
 #include "driver/spi_common.h"
 #include "driver/spi_master.h"
 #include "freertos/FreeRTOS.h"
@@ -38,7 +37,7 @@ void lcd_init(void)
     devcfg.flags = SPI_DEVICE_NO_DUMMY;         //只发送数据不接收数据 (这样SPI输出能达到80MHz)
     devcfg.pre_cb = spi_pre_transfer_callback;  //SPI传输前的回调 用于操作DC引脚
     devcfg.clock_speed_hz = SPI_MASTER_FREQ_80M;//配置SIP通讯时序 80MHz
-    //devcfg.cs_ena_pretrans = 1;                 //传输前CS的拉低延迟
+    devcfg.cs_ena_pretrans = 1;                 //传输前CS的拉低延迟
 
     ret = spi_bus_initialize(SPI3_HOST,&buscfg,1);       //初始化SPI总线 不使用DMA
     ESP_ERROR_CHECK(ret);

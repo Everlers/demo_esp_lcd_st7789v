@@ -17,6 +17,10 @@
     "unordered_set": "c",
     "vector": "c",
     "string_view": "c",
-    "initializer_list": "c"
+    "initializer_list": "c",
+    "freertos.h": "c",
+    "st7789v.h": "c",
+    "spi_common.h": "c",
+    "spi_master.h": "c"
   }
 }

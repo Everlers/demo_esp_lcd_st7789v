@@ -16,6 +16,10 @@
 #define LCD_WIDTH               239
 #define LCD_HIGH                136
 
+//颜色
+#define WHITE                   0x0000
+#define BLACK                   0xFFFF
+
 /*
  LCD需要一堆命令/参数来初始化。它们储存在这个结构中。
  The LCD needs a bunch of command/argument values to be initialized. They are stored in this struct.

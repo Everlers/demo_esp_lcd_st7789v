@@ -16,8 +16,9 @@
 void app_main(void)
 {
     lcd_init();
-    lcd_show_string(219,128,"ABC",0,0xFFFF);
-    printf("ascii show\r\n");
+    lcd_show_string(0,0,"ESP32",WHITE,BLACK);
+    lcd_show_string(0,8,"Lcd test",WHITE,BLACK);
+    lcd_show_string(0,16,"Lcd ic: ST7789V",WHITE,BLACK);
     while (1)
     {
         vTaskDelay(100);

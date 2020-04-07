@@ -5,14 +5,15 @@
       "cStandard": "c11",
       "cppStandard": "c++17",
       "includePath": [
-        "E:/ESP32/esp-idf-v4.0/components/**",
-        "${config:idf.espIdfPathWin}/components/**",
+        "C:/esp/esp-idf/components/**",
+        "C:/esp/esp-idf/components/freertos/include/",
+        "C:/esp/.espressif/tools/xtensa-esp32-elf/esp-2019r2-8.2.0/xtensa-esp32-elf/xtensa-esp32-elf/include",
         "${workspaceFolder}/**",
         "${workspaceFolder}/main/st7789v/"
       ],
       "browse": {
         "path": [
-          "E:/ESP32/esp-idf-v4.0/components",
+          "C:/esp/esp-idf/components",
           "${config:idf.espIdfPathWin}/components",
           "${workspaceFolder}"
         ],
