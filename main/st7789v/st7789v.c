@@ -65,7 +65,7 @@ void lcd_init(void)
         cmd++;
     }
     printf("ST7789V clean display\r\n");
-    lcd_clean(0xFFFF);
+    lcd_clean(COLOR_BLACK);
     lcd_blk_on();
     printf("ST7789V init done.\r\n");
 }
@@ -200,9 +200,9 @@ static void st7789v_write_data(uint8_t *data,uint32_t len)
 
 //将数据放入DRAM中，默认情况下，常量数据放入DROM中，这是DMA无法访问的。
 //Place data into DRAM. Constant data gets placed into DROM by default, which is not accessible by DMA.
-DRAM_ATTR static const lcd_init_cmd_t st_init_cmds[]={
+DMA_ATTR static const lcd_init_cmd_t st_init_cmds[]={
     /* Memory Data Access Control, MX=MV=1, MY=ML=MH=0, RGB=0 */
-    {0x36, {(1<<5)|(1<<6)|(0<<3)}, 1},
+    {0x36, {(1<<5)|(1<<6)|(1<<3)}, 1},
     /* Interface Pixel Format, 16bits/pixel for RGB/MCU interface */
     {0x3A, {0x55}, 1},
     /* Porch Setting */
@@ -212,7 +212,7 @@ DRAM_ATTR static const lcd_init_cmd_t st_init_cmds[]={
     /* VCOM Setting, VCOM=1.175V */
     {0xBB, {0x2B}, 1},
     /* LCM Control, XOR: BGR, MX, MH */
-    {0xC0, {0x2C}, 1},
+    {0xC0, {0x18}, 1},
     /* VDV and VRH Command Enable, enable=1 */
     {0xC2, {0x01, 0xff}, 2},
     /* VRH Set, Vap=4.4+... */
