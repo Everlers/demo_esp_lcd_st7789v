@@ -5,15 +5,15 @@
       "cStandard": "c11",
       "cppStandard": "c++17",
       "includePath": [
-        "C:/esp/esp-idf/components/**",
-        "C:/esp/esp-idf/components/freertos/include/",
-        "C:/esp/.espressif/tools/xtensa-esp32-elf/esp-2019r2-8.2.0/xtensa-esp32-elf/xtensa-esp32-elf/include",
+        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/**",
+        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/freertos/include/",
+        "${config:LinuxRootDir}/home/evler/esp/xtensa-esp32-elf/xtensa-esp32-elf/include",
         "${workspaceFolder}/**",
         "${workspaceFolder}/main/st7789v/"
       ],
       "browse": {
         "path": [
-          "C:/esp/esp-idf/components",
+          "${config:LinuxRootDir}/home/evler/esp/esp-idf/components",
           "${config:idf.espIdfPathWin}/components",
           "${workspaceFolder}"
         ],
