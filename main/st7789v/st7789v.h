@@ -16,10 +16,13 @@
 #define LCD_WIDTH               239
 #define LCD_HIGH                136
 
-//颜色 RGB565 16位大端模式(取值相反)
-#define COLOR_RED								0x00F8
-#define COLOR_WHITE             0xFFFF
-#define COLOR_BLACK             0x0000
+//颜色 RGB565 16位大端模式
+#define ST_DATA_CONVERSION(x)		(uint16_t)((x>>8)|(x<<8))//数据大小端转换
+#define COLOR_RED								ST_DATA_CONVERSION(0xF800)
+#define COLOR_GREEN							ST_DATA_CONVERSION(0x07E0)
+#define COLOR_BLUE							ST_DATA_CONVERSION(0x001F)
+#define COLOR_WHITE             ST_DATA_CONVERSION(0xFFFF)
+#define COLOR_BLACK             ST_DATA_CONVERSION(0x0000)
 
 /*
  LCD需要一堆命令/参数来初始化。它们储存在这个结构中。
